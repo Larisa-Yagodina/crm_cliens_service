@@ -7,7 +7,7 @@ import CompanyResult from "./CompanyResult";
 import ClientsList from "./ClientsList";
 import ServicesList from "./ServicesList";
 import CreateNewJob from "./CreacteNewJob";
-import CreateNewOrder from "./CreateNewOrder";
+import './App.css'
 
 const initialOrders = [{
     id: uuidv4(),
@@ -17,10 +17,10 @@ const initialOrders = [{
         employee: 'Greg',
         price: 100,
         primeCost: 20,
-        createAt: '15.01.2021',
+        createAt: 'Feb 01 2021',
     },
     sentToDo: {
-        date: '15.01.2021',
+        date: 'Feb 01 2021',
         status: false
     },
     completed: {
@@ -50,10 +50,10 @@ const initialOrders = [{
             employee: 'Bob',
             price: 200,
             primeCost: 50,
-            createAt: '20.01.2021',
+            createAt: 'Feb 01 2021',
         },
         sentToDo: {
-            date: '21.01.2021',
+            date: 'Feb 02 2021',
             status: true
         },
         completed: {
@@ -99,20 +99,26 @@ function App() {
         setClients(newClients)
     }
 
-    const createNewOrder = (clientName, job, prepaid) => {
-        console.log(job)
-        const service = services.filter(el => el.job === job);
-        console.log(service[0].price)
+    const getDate = () => {
+        const fullDate = new Date().toDateString().split(' ');
+        fullDate.shift();
+        return fullDate.join(' ');
+    }
+
+    const createNewOrder = (clientName, job, price, prepaid) => {
+        const service = services.filter(el => el.job === job)[0];
         const paid = {
             prepaid,
-            debt: '',
+            debt: price - Number(prepaid),
             date: '',
-            status: false
+            status: false,
         }
         const newOrders = [...orders, {
             id: uuidv4(),
             clientName,
-            service,
+            service: {
+                ...service, price, createAt: getDate(),
+            },
             sentToDo: {
                 date: '',
                 status: true
@@ -144,9 +150,6 @@ function App() {
     ])
 
     const getResults = () => {
-        // const income = orders.reduce((acc, curr) => acc + curr.service.price, 0);
-        // const paidSum = orders.reduce((acc, curr) => acc + curr.paid.prepaid, 0);
-        // const clientDebt = orders.reduce((acc, curr) => acc + curr.paid.debt, 0);
         const newResults = [{
             income: orders.reduce((acc, curr) => acc + curr.service.price, 0),
             paidSum: orders.reduce((acc, curr) => acc + curr.paid.prepaid, 0),
@@ -155,7 +158,7 @@ function App() {
         setResults(newResults)
     }
 
-    const [openTable, setOpenTable] = useState(orders)
+    const [openTable, setOpenTable] = useState('orders')
 
     const toggle = (value) => {
         setOpenTable(value)
@@ -172,7 +175,6 @@ function App() {
             <h1> Clients & Orders </h1>
             <CreateNewClient createNewClient={createNewClient}/>
             <CreateNewJob createNewJob={createNewJob}/>
-            <CreateNewOrder createNewOrder={createNewOrder} clients={clients} services={services}/>
             <hr/>
             <button className="btn btn-outline-dark" size="sm" onClick={() => toggle('orders')}> Orders</button>
             {' '}
@@ -182,9 +184,13 @@ function App() {
             {' '}
             <button className="btn btn-outline-dark" size="sm" onClick={() => toggle('results')}> Results</button>
             {' '}
-
-
-            {openTable === 'orders' && <OrdersList orders={orders}/>}
+            <hr/>
+            {openTable === 'orders' && <OrdersList
+                orders={orders}
+                createNewOrder={createNewOrder}
+                clients={clients}
+                services={services}
+            />}
             {openTable === 'clients' && <ClientsList clients={clients}/>}
             {openTable === 'services' && <ServicesList job={services}/>}
             {openTable === 'results' && <CompanyResult
