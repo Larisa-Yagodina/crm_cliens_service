@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import ClientUpdateModal from "./ClientEditModal";
+import ClientDeleteModal from "./ClientDeleteModal";
 
 
 
@@ -11,8 +12,8 @@ export default function ClientItem(props) {
     const toggle = () => setOpen(!dropdownOpen);
     const [modalUpdate, setModalUpdate] = useState(false);
     const openModalUpdate = () => setModalUpdate(!modalUpdate)
-
-    console.log(modalUpdate)
+    const [modalDelete, setModalDelete] = useState(false);
+    const openModalDelete = () => setModalDelete(!modalDelete)
 
     const { client } = props;
 
@@ -29,7 +30,7 @@ export default function ClientItem(props) {
                     </DropdownToggle>
                     <DropdownMenu container="body">
                         <DropdownItem onClick={openModalUpdate}>Update</DropdownItem>
-                        <DropdownItem>Delete</DropdownItem>
+                        <DropdownItem onClick={openModalDelete}>Delete</DropdownItem>
                     </DropdownMenu>
                 </ButtonDropdown>
                 <ClientUpdateModal
@@ -37,6 +38,12 @@ export default function ClientItem(props) {
                     modal={modalUpdate}
                     setModal={setModalUpdate}
                     updateClient={props.updateClient}
+                />
+                <ClientDeleteModal
+                    client={client}
+                    modal={modalDelete}
+                    setModal={setModalDelete}
+                    deleteClient={props.deleteClient}
                 />
             </td>
         </tr>

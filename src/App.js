@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import {v4 as uuidv4} from 'uuid';
-import OrdersList from "./OrdersList";
-import CompanyResult from "./CompanyResult";
-import ClientsList from "./ClientsList";
-import ServicesList from "./ServicesList";
+import OrdersList from "./order/OrdersList";
+import CompanyResult from "./results/CompanyResult";
+import ClientsList from "./client/ClientsList";
+import ServicesList from "./services/ServicesList";
 import {Nav, NavItem, NavLink} from 'reactstrap';
 import classnames from 'classnames';
+import {getDate} from "./GetDate";
 
 
 const initialOrders = [{
@@ -20,12 +21,12 @@ const initialOrders = [{
         createAt: '15.01.2021',
     },
     sentToDo: {
-        date: '15.01.2021',
-        status: false
+        date: '10.01.2021',
+        status: true
     },
     completed: {
-        date: '',
-        status: false
+        date: "31.01.2021",
+        status: true
     },
     sayToClient: {
         date: '',
@@ -36,7 +37,7 @@ const initialOrders = [{
         status: false
     },
     paid: {
-        prepaid: 50,
+        payment: 50,
         debt: 50,
         date: '',
         status: false
@@ -69,7 +70,7 @@ const initialOrders = [{
             status: false
         },
         paid: {
-            prepaid: 170,
+            payment: 170,
             debt: 30,
             date: '',
             status: false
@@ -94,24 +95,19 @@ function App() {
     const [clients, setClients] = useState(initialClients)
     const [services, setServices] = useState(initialJob)
 
-    const createNewClient = (name, address, phoneNumber, createAt) => {
+    const createNewClient = (name, address, phoneNumber, create) => {
+        const createAt = create === '' ? getDate() : create;
         const newClients = [...clients, {id: uuidv4(), name, address, phoneNumber, createAt}];
         setClients(newClients)
-    }
-
-    const getDate = () => {
-        const newDate = new Date().toDateString().split(' ');
-        newDate.shift();
-        return newDate.join(' ');
     }
 
     const createNewOrder = (clientName, job, prepaid) => {
         const service = services.filter(el => el.job === job);
         const paid = {
-            prepaid,
+            payment: prepaid,
             debt: service[0].price - prepaid,
             date: service[0].price <= prepaid ? getDate() : null,
-            status: (service[0].price <= prepaid) ? true : false,
+            status: (service[0].price <= prepaid),
         }
         const newOrders = [...orders, {
             id: uuidv4(),
@@ -119,7 +115,7 @@ function App() {
             service: {...service[0], createAt: getDate()},
             sentToDo: {
                 date: '',
-                status: true
+                status: false
             },
             completed: {
                 date: '',
@@ -153,10 +149,43 @@ function App() {
 
     const updateClient = (clientId, client) => {
         const newClients = clients.map(el => {
-                if (el.id === clientId) return {...el, ...client}
-                return {...el};
+            if (el.id === clientId) return {...el, ...client}
+            return {...el};
         })
         setClients(newClients)
+    }
+
+    const updateJob = (jobId, job) => {
+        const newJob = services.map(el => {
+            if (el.id === jobId) return {...el, ...job}
+            return {...el};
+        })
+        setServices(newJob)
+    }
+
+    const updateOrder = (orderId, order) => {
+        const newOrder = orders.map(el => {
+            if (el.id === orderId) return {...el, ...order}
+            return {...el};
+        })
+        setOrders(newOrder)
+    }
+
+    console.log(orders)
+
+    const deleteClient = (clientId) => {
+        const newClients = clients.filter(el => el.id !== clientId)
+        setClients(newClients)
+    }
+
+    const deleteJob = (jobId) => {
+        const newJob = services.filter(el => el.id !== jobId)
+        setServices(newJob)
+    }
+
+    const deleteOrder = (orderId) => {
+        const newOrders = orders.filter(el => el.id !== orderId)
+        setOrders(newOrders)
     }
 
     return (
@@ -212,16 +241,22 @@ function App() {
                 orders={orders}
                 job={services}
                 createNewOrder={createNewOrder}
-                clients={clients}/>}
+                clients={clients}
+                deleteOrder={deleteOrder}
+                updateOrder={updateOrder}
+            />}
             {activeTab === 'clients' && <ClientsList
                 updateClient={updateClient}
                 clients={clients}
                 createNewClient={createNewClient}
+                deleteClient={deleteClient}
             />}
             {activeTab === 'services' && <ServicesList
                 job={services}
                 createNewJob={createNewJob}
                 clients={clients}
+                updateJob={updateJob}
+                deleteJob={deleteJob}
             />}
             {activeTab === 'results' && <CompanyResult
                 results={results}

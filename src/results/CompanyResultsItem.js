@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function CompanyResultItem(props) {
 
-    const { result } = props;
+    const {result} = props;
 
     return (
         <tr>

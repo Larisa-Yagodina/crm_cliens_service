@@ -25,11 +25,17 @@ export default function ServicesList(props) {
                     <th>Price</th>
                     <th>Employee</th>
                     <th>Prime cost</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                {props.job.map(el => <ServicesItem key={el.id} job={el}/>)}
+                {props.job.map(el => <ServicesItem
+                    key={el.id}
+                    job={el}
+                    updateJob={props.updateJob}
+                    deleteJob={props.deleteJob}
+                />)}
                 </tbody>
             </Table>
         </div>

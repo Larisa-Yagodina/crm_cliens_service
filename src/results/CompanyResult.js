@@ -14,7 +14,7 @@ export default function CompanyResult(props) {
                     id: uuidv4(),
                     job: el.job,
                     income: orders.filter(el => el.service.job === el.job).reduce((acc, curr) => acc + curr.service.price, 0),
-                    paidSum: orders.filter(el => el.service.job === el.job).reduce((acc, curr) => acc + curr.paid.prepaid, 0),
+                    paidSum: orders.filter(el => el.service.job === el.job).reduce((acc, curr) => acc + curr.paid.paid, 0),
                     clientDebt: orders.filter(el => el.service.job === el.job).reduce((acc, curr) => acc + curr.paid.debt, 0),
                 }]
                 props.setResults(newResults)
@@ -45,7 +45,7 @@ export default function CompanyResult(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {props.results.map(el => <CompanyResultItem key={el.id} result={el} />)}
+                {props.results.map(el => <CompanyResultItem key={el.id} result={el}/>)}
                 </tbody>
             </Table>
         </div>

@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 
-export default function CreateNewOrder(props){
+export default function CreateNewOrder(props) {
 
-    const { clients, services } = props;
+    const {clients, services} = props;
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
@@ -41,7 +41,8 @@ export default function CreateNewOrder(props){
                         <select
                             onChange={(e) => setName(e.target.value)}
                             className="form-select" id="inputGroupSelect01">
-                            {clients.map(el => <option key={el.name + el.phoneNumber} value={el.name}>{el.name}</option>)}
+                            {clients.map(el => <option key={el.name + el.phoneNumber}
+                                                       value={el.name}>{el.name}</option>)}
                         </select>
                     </div>
                     <div className="input-group mb-3">
@@ -66,7 +67,8 @@ export default function CreateNewOrder(props){
 
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={() => saveButtonHandler(name, newJob, prepaid)}> Save </Button>{' '}
+                    <Button color="primary"
+                            onClick={() => saveButtonHandler(name, newJob, prepaid)}> Save </Button>{' '}
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>

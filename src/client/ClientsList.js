@@ -2,7 +2,7 @@ import React from 'react';
 import {Table} from "reactstrap";
 import ClientItem from "./ClientItem";
 import CreateNewClient from "./CreateNewClient";
-import './App.css';
+import '../App.css';
 
 
 
@@ -37,6 +37,7 @@ export default function ClientsList(props) {
                 key={el.id}
                 client={el}
                 updateClient={props.updateClient}
+                deleteClient={props.deleteClient}
             />)}
 
             </tbody>

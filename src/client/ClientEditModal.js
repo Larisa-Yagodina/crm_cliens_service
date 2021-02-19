@@ -23,7 +23,7 @@ export default function ClientUpdateModal(props){
                 <ModalBody>
 
                     <div className="input-group mb-3">
-                        <span className="input-group-text" id="basic-addon1"> Job: </span>
+                        <span className="input-group-text" id="basic-addon1"> Client name: </span>
                         <input
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -31,7 +31,7 @@ export default function ClientUpdateModal(props){
                                aria-describedby="basic-addon1"/>
                     </div>
                     <div className="input-group mb-3">
-                        <span className="input-group-text" id="basic-addon1"> Job: </span>
+                        <span className="input-group-text" id="basic-addon1"> Address: </span>
                         <input
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
@@ -39,7 +39,7 @@ export default function ClientUpdateModal(props){
                             aria-describedby="basic-addon1"/>
                     </div>
                     <div className="input-group mb-3">
-                        <span className="input-group-text" id="basic-addon1"> Job: </span>
+                        <span className="input-group-text" id="basic-addon1"> Phone number: </span>
                         <input
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}

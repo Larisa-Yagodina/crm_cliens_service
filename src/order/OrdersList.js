@@ -24,15 +24,21 @@ export default function OrdersList(props) {
                 <th>Name</th>
                 <th>Service</th>
                 <th>Price</th>
-                <th>Prepaid</th>
+                <th>Payments</th>
                 <th>Debt</th>
                 <th>Create at</th>
                 <th>Statuses</th>
+                <th>Dates</th>
+                <th>Actions</th>
             </tr>
             </thead>
-
             <tbody>
-            {props.orders.map(el => <OrderItem key={el.id} order={el} />)}
+            {props.orders.map(el => <OrderItem
+                key={el.id}
+                order={el}
+                deleteOrder={props.deleteOrder}
+                updateOrder={props.updateOrder}
+            />)}
 
             </tbody>
         </Table>

@@ -11,13 +11,13 @@ export default function CreateNewClient(props) {
     const [newAddress, setNewAddress] = useState('');
     const [createAt, setCreateAt] = useState('')
 
-    const saveButtonHander = () => {
+    const saveButtonHandler = () => {
         props.createNewClient(newName, newAddress, newPhoneNumber, createAt);
         toggle();
         setNewName('')
         setNewPhoneNumber('')
         setNewAddress('')
-        setCreateAt(null)
+        setCreateAt('')
     }
 
 
@@ -68,7 +68,7 @@ export default function CreateNewClient(props) {
                 <ModalFooter>
                     <Button
                         color="primary"
-                        onClick={saveButtonHander}
+                        onClick={saveButtonHandler}
                     > Save </Button>{' '}
                     <Button color="secondary" onClick={toggle}> Cancel </Button>
                 </ModalFooter>
