@@ -11,7 +11,7 @@ export default function CreateNewClient(props) {
     const [newAddress, setNewAddress] = useState('');
     const [createAt, setCreateAt] = useState('')
 
-    const saveButtonHandel = () => {
+    const saveButtonHander = () => {
         props.createNewClient(newName, newAddress, newPhoneNumber, createAt);
         toggle();
         setNewName('')
@@ -23,7 +23,7 @@ export default function CreateNewClient(props) {
 
     return (
         <div>
-            <Button outline color="info" onClick={toggle}> Create new client </Button>
+            <Button outline color="primary" onClick={toggle}> Create new client </Button>
 
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Modal title</ModalHeader>
@@ -68,7 +68,7 @@ export default function CreateNewClient(props) {
                 <ModalFooter>
                     <Button
                         color="primary"
-                        onClick={saveButtonHandel}
+                        onClick={saveButtonHander}
                     > Save </Button>{' '}
                     <Button color="secondary" onClick={toggle}> Cancel </Button>
                 </ModalFooter>

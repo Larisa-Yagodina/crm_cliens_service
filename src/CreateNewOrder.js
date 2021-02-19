@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export default function CreateNewOrder(props){
@@ -7,21 +7,32 @@ export default function CreateNewOrder(props){
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
-    const [name, setName] = useState('');
-    const [newJob, setNewJob] = useState('');
+    const [name, setName] = useState(clients[0].name);
+    const [newJob, setNewJob] = useState(services[0].job);
     const [prepaid, setPrepaid] = useState('');
+    const [price, setPrice] = useState(services[0].price);
+
+    const getPrice = () => {
+        const newService = services.filter(el => el.job === newJob);
+        setPrice(newService[0].price)
+    }
+
+    useEffect(() => {
+        getPrice()
+    }, [newJob])
 
     const saveButtonHandler = (name, newJob, prepaid) => {
         props.createNewOrder(name, newJob, prepaid)
         toggle()
-        setName('')
-        setNewJob('')
+        setName(clients[0].name)
+        setNewJob(services[0].job)
         setPrepaid('')
+        setPrice(services[0].price)
     }
 
     return (
         <div>
-            <Button outline color="info" onClick={toggle}> CreateNewOrder </Button>
+            <Button outline color="primary" onClick={toggle}> CreateNewOrder </Button>
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}> Create new order </ModalHeader>
                 <ModalBody>
@@ -36,18 +47,19 @@ export default function CreateNewOrder(props){
                     <div className="input-group mb-3">
                         <label className="input-group-text" htmlFor="inputGroupSelect01">Job: </label>
                         <select
-
                             onChange={(e) => setNewJob(e.target.value)}
                             className="form-select" id="inputGroupSelect01">
                             {services.map(el => <option key={el.job + el.price} value={el.job}>{el.job}</option>)}
                         </select>
                     </div>
-
+                    <div className="input-group mb-3">
+                        Price: {price}
+                    </div>
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="basic-addon1">Prepaid: </span>
                         <input
                             value={prepaid}
-                            onChange={(e) => setPrepaid(e.target.value)}
+                            onChange={(e) => setPrepaid(+e.target.value)}
                             type="number" className="form-control" placeholder="prepaid"
                             aria-describedby="basic-addon1"/>
                     </div>

@@ -1,13 +1,23 @@
 import React from 'react';
 import {Table} from "reactstrap";
 import ServicesItem from "./ServicesItem";
+import CreateNewJob from "./CreacteNewJob";
 
 
 export default function ServicesList(props) {
 
     return (
         <div>
-            <h2> Job </h2>
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <h2> Job </h2>
+                    </div>
+                    <div className="col createButton">
+                        <CreateNewJob createNewJob={props.createNewJob}/>
+                    </div>
+                </div>
+            </div>
             <Table striped>
                 <thead>
                 <tr>

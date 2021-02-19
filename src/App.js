@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import CreateNewClient from "./CreateNewClient";
 import 'bootstrap/dist/css/bootstrap.css';
 import {v4 as uuidv4} from 'uuid';
 import OrdersList from "./OrdersList";
 import CompanyResult from "./CompanyResult";
 import ClientsList from "./ClientsList";
 import ServicesList from "./ServicesList";
-import CreateNewJob from "./CreacteNewJob";
-import CreateNewOrder from "./CreateNewOrder";
+import {Nav, NavItem, NavLink} from 'reactstrap';
+import classnames from 'classnames';
+
 
 const initialOrders = [{
     id: uuidv4(),
@@ -99,20 +99,24 @@ function App() {
         setClients(newClients)
     }
 
+    const getDate = () => {
+        const newDate = new Date().toDateString().split(' ');
+        newDate.shift();
+        return newDate.join(' ');
+    }
+
     const createNewOrder = (clientName, job, prepaid) => {
-        console.log(job)
         const service = services.filter(el => el.job === job);
-        console.log(service[0].price)
         const paid = {
             prepaid,
-            debt: '',
-            date: '',
-            status: false
+            debt: service[0].price - prepaid,
+            date: service[0].price <= prepaid ? getDate() : null,
+            status: (service[0].price <= prepaid) ? true : false,
         }
         const newOrders = [...orders, {
             id: uuidv4(),
             clientName,
-            service,
+            service: {...service[0], createAt: getDate()},
             sentToDo: {
                 date: '',
                 status: true
@@ -134,62 +138,96 @@ function App() {
         setOrders(newOrders)
     }
 
-    const [results, setResults] = useState([
-        {
-            id: uuidv4(),
-            income: null,
-            paidSum: null,
-            clientDebt: null
-        }
-    ])
+    const [results, setResults] = useState([])
 
-    const getResults = () => {
-        // const income = orders.reduce((acc, curr) => acc + curr.service.price, 0);
-        // const paidSum = orders.reduce((acc, curr) => acc + curr.paid.prepaid, 0);
-        // const clientDebt = orders.reduce((acc, curr) => acc + curr.paid.debt, 0);
-        const newResults = [{
-            income: orders.reduce((acc, curr) => acc + curr.service.price, 0),
-            paidSum: orders.reduce((acc, curr) => acc + curr.paid.prepaid, 0),
-            clientDebt: orders.reduce((acc, curr) => acc + curr.paid.debt, 0),
-        }]
-        setResults(newResults)
-    }
+    const [activeTab, setActiveTab] = useState('orders');
 
-    const [openTable, setOpenTable] = useState(orders)
-
-    const toggle = (value) => {
-        setOpenTable(value)
+    const toggle = tab => {
+        if (activeTab !== tab) setActiveTab(tab);
     }
 
     const createNewJob = (job, price, primeCost, employee) => {
-
         const newServices = [...services, {id: uuidv4(), job, price, primeCost, employee}]
         setServices(newServices)
+    }
+
+    const updateClient = (clientId, client) => {
+        const newClients = clients.map(el => {
+                if (el.id === clientId) return {...el, ...client}
+                return {...el};
+        })
+        setClients(newClients)
     }
 
     return (
         <div className='container'>
             <h1> Clients & Orders </h1>
-            <CreateNewClient createNewClient={createNewClient}/>
-            <CreateNewJob createNewJob={createNewJob}/>
-            <CreateNewOrder createNewOrder={createNewOrder} clients={clients} services={services}/>
             <hr/>
-            <button className="btn btn-outline-dark" size="sm" onClick={() => toggle('orders')}> Orders</button>
-            {' '}
-            <button className="btn btn-outline-dark" size="sm" onClick={() => toggle('clients')}> Clients</button>
-            {' '}
-            <button className="btn btn-outline-dark" size="sm" onClick={() => toggle('services')}> Job</button>
-            {' '}
-            <button className="btn btn-outline-dark" size="sm" onClick={() => toggle('results')}> Results</button>
-            {' '}
+            <div>
+                <Nav tabs>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({active: activeTab === 'orders'})}
+                            onClick={() => {
+                                toggle('orders');
+                            }}
+                        >
+                            Orders
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({active: activeTab === 'clients'})}
+                            onClick={() => {
+                                toggle('clients');
+                            }}
+                        >
+                            Clients
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({active: activeTab === 'services'})}
+                            onClick={() => {
+                                toggle('services');
+                            }}
+                        >
+                            Services
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({active: activeTab === 'results'})}
+                            onClick={() => {
+                                toggle('results');
+                            }}
+                        >
+                            Company Results
+                        </NavLink>
+                    </NavItem>
+                </Nav>
+            </div>
 
-
-            {openTable === 'orders' && <OrdersList orders={orders}/>}
-            {openTable === 'clients' && <ClientsList clients={clients}/>}
-            {openTable === 'services' && <ServicesList job={services}/>}
-            {openTable === 'results' && <CompanyResult
-                getResults={getResults}
+            {activeTab === 'orders' && <OrdersList
+                orders={orders}
+                job={services}
+                createNewOrder={createNewOrder}
+                clients={clients}/>}
+            {activeTab === 'clients' && <ClientsList
+                updateClient={updateClient}
+                clients={clients}
+                createNewClient={createNewClient}
+            />}
+            {activeTab === 'services' && <ServicesList
+                job={services}
+                createNewJob={createNewJob}
+                clients={clients}
+            />}
+            {activeTab === 'results' && <CompanyResult
                 results={results}
+                setResults={setResults}
+                orders={orders}
+                services={services}
             />}
         </div>
     );

@@ -1,13 +1,23 @@
 import React from 'react';
 import {Table} from "reactstrap";
 import OrderItem from "./OrderItem";
+import CreateNewOrder from "./CreateNewOrder";
 
 
 export default function OrdersList(props) {
 
     return (
         <div>
-        <h2> Orders </h2>
+                <div className="container">
+                    <div className="row">
+                        <div className="col">
+                            <h2> Orders </h2>
+                        </div>
+                        <div className="col createButton">
+                            <CreateNewOrder createNewOrder={props.createNewOrder} clients={props.clients} services={props.job}/>
+                        </div>
+                    </div>
+                </div>
     <Table striped>
             <thead>
             <tr>

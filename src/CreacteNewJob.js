@@ -23,7 +23,7 @@ export default function CreateNewJob(props){
 
     return (
         <div>
-            <Button outline color="info" onClick={toggle}> Create new job </Button>
+            <Button outline color="primary" onClick={toggle}> Create new job </Button>
 
             <Modal isOpen={modal} toggle={toggle} >
                 <ModalHeader toggle={toggle}>Modal title</ModalHeader>

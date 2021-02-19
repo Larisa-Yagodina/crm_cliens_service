@@ -18,7 +18,6 @@ export default function OrderItem(props) {
                 <div>
                     <Label check>
                         In progress
-
                     </Label> {order.sentToDo.date}
                 </div>
                 <div>
@@ -40,7 +39,7 @@ export default function OrderItem(props) {
 
                 <div>
                     <Label check>
-                        Paid
+                        Paid: { order.paid.status ? '✓' : null}
                     </Label> {order.paid.date}
                 </div>
 

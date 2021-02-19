@@ -7,6 +7,7 @@ export default function CompanyResultItem(props) {
 
     return (
         <tr>
+            <th scope="row">{result.job}</th>
             <th scope="row">{result.income}</th>
             <td>{result.paidSum}</td>
             <td>{result.clientDebt}</td>
