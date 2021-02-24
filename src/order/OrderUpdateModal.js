@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ListGroupItem, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-import {getDate} from "../GetDate";
+import {getDate} from "../additional/GetDate";
 
 
 export default function OrderUpdateModal(props) {
@@ -46,8 +46,6 @@ export default function OrderUpdateModal(props) {
         toggle()
         setNewPayment(0)
     }
-
-    console.log('inProgress', inProgress)
 
     return (
         <div>

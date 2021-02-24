@@ -43,7 +43,7 @@ export default function CreateNewClient(props) {
                         <input
                             value={newPhoneNumber}
                             onChange={(e) => setNewPhoneNumber(e.target.value)}
-                            type="text" className="form-control" placeholder="Phone number"/>
+                            type="number" className="form-control" placeholder="1 999 999 99 99"/>
                     </div>
                     <br/>
                     <div className="input-group flex-nowrap">

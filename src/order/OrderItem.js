@@ -15,6 +15,7 @@ export default function OrderItem(props) {
 
     return (
         <tr>
+            <th scope="row">{order.orderNumber}</th>
             <th scope="row">{order.clientName}</th>
             <td>
                 <b>{order.service.job}</b>

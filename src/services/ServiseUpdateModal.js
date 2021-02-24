@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import React, {useState} from 'react';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 
 
-export default function ServiceUpdateModal(props){
+export default function ServiceUpdateModal(props) {
 
     const {modal, setModal, job} = props;
     const toggle = () => setModal(!modal);
@@ -19,7 +19,7 @@ export default function ServiceUpdateModal(props){
 
     return (
         <div>
-            <Modal isOpen={modal} toggle={toggle} >
+            <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Update client</ModalHeader>
                 <ModalBody>
 
@@ -35,7 +35,7 @@ export default function ServiceUpdateModal(props){
                         <span className="input-group-text" id="basic-addon1"> Price: </span>
                         <input
                             value={updatedPrice}
-                            onChange={(e) => setUpdatedPrice(e.target.value)}
+                            onChange={(e) => setUpdatedPrice(Number(e.target.value))}
                             type="text" className="form-control" placeholder="price"
                             aria-describedby="basic-addon1"/>
                     </div>
@@ -43,7 +43,7 @@ export default function ServiceUpdateModal(props){
                         <span className="input-group-text" id="basic-addon1"> Prime cost: </span>
                         <input
                             value={updatedPrimeCost}
-                            onChange={(e) => setUpdatedPrimeCost(e.target.value)}
+                            onChange={(e) => setUpdatedPrimeCost(Number(e.target.value))}
                             type="text" className="form-control" placeholder="prime cost"
                             aria-describedby="basic-addon1"/>
                     </div>

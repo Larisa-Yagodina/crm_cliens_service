@@ -54,7 +54,7 @@ export default function CreateNewOrder(props) {
                         </select>
                     </div>
                     <div className="input-group mb-3">
-                        Price: {price}
+                        Price: ${price}
                     </div>
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="basic-addon1">Prepaid: </span>

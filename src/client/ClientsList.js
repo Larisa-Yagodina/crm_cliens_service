@@ -5,7 +5,6 @@ import CreateNewClient from "./CreateNewClient";
 import '../App.css';
 
 
-
 export default function ClientsList(props) {
 
     return (
@@ -22,26 +21,26 @@ export default function ClientsList(props) {
                 </div>
             </div>
             <Table striped>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Phone number</th>
-                <th>Create at</th>
-                <th> Actions </th>
-            </tr>
-            </thead>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone number</th>
+                    <th>Create at</th>
+                    <th> Actions</th>
+                </tr>
+                </thead>
 
-            <tbody>
-            {props.clients.map(el => <ClientItem
-                key={el.id}
-                client={el}
-                updateClient={props.updateClient}
-                deleteClient={props.deleteClient}
-            />)}
+                <tbody>
+                {props.clients.map(el => <ClientItem
+                    key={el.id}
+                    client={el}
+                    updateClient={props.updateClient}
+                    deleteClient={props.deleteClient}
+                />)}
 
-            </tbody>
-        </Table>
+                </tbody>
+            </Table>
         </div>
     )
 }

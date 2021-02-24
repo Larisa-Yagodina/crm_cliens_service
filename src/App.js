@@ -7,14 +7,15 @@ import ClientsList from "./client/ClientsList";
 import ServicesList from "./services/ServicesList";
 import {Nav, NavItem, NavLink} from 'reactstrap';
 import classnames from 'classnames';
-import {getDate} from "./GetDate";
+import {getDate} from "./additional/GetDate";
 
 
 const initialOrders = [{
+    orderNumber: 1,
     id: uuidv4(),
     clientName: 'Bill Brown',
     service: {
-        job: 'translation',
+        job: 'Translation',
         employee: 'Greg',
         price: 100,
         primeCost: 20,
@@ -39,15 +40,17 @@ const initialOrders = [{
     paid: {
         payment: 50,
         debt: 50,
+        primeCost: 20,
         date: '',
         status: false
     },
 },
     {
+        orderNumber: 2,
         id: uuidv4(),
         clientName: 'Alice Smith',
         service: {
-            job: 'consultation',
+            job: 'Consultation',
             employee: 'Bob',
             price: 200,
             primeCost: 50,
@@ -72,6 +75,7 @@ const initialOrders = [{
         paid: {
             payment: 170,
             debt: 30,
+            primeCost: 50,
             date: '',
             status: false
         },
@@ -79,8 +83,8 @@ const initialOrders = [{
 ]
 
 const initialClients = [
-    {id: uuidv4(), name: 'Bill Brown', address: 'New York', phoneNumber: '+198374928374', createAt: '15.01.2021'},
-    {id: uuidv4(), name: 'Bob Smith', address: 'Chicago', phoneNumber: '+1987654321', createAt: '20.01.2021'},
+    {id: uuidv4(), name: 'Bill Brown', address: 'New York', phoneNumber: '198374928374', createAt: '15.01.2021'},
+    {id: uuidv4(), name: 'Bob Smith', address: 'Chicago', phoneNumber: '1987654321', createAt: '20.01.2021'},
 ]
 
 const initialJob = [
@@ -91,6 +95,7 @@ const initialJob = [
 
 function App() {
 
+    const [serialOrderNumber, setSerialOrderNumber] = useState(3)
     const [orders, setOrders] = useState(initialOrders)
     const [clients, setClients] = useState(initialClients)
     const [services, setServices] = useState(initialJob)
@@ -106,10 +111,12 @@ function App() {
         const paid = {
             payment: prepaid,
             debt: service[0].price - prepaid,
+            primeCost: service[0].primeCost,
             date: service[0].price <= prepaid ? getDate() : null,
             status: (service[0].price <= prepaid),
         }
         const newOrders = [...orders, {
+            orderNumber: serialOrderNumber,
             id: uuidv4(),
             clientName,
             service: {...service[0], createAt: getDate()},
@@ -132,9 +139,46 @@ function App() {
             paid,
         }]
         setOrders(newOrders)
+        setSerialOrderNumber(serialOrderNumber + 1)
     }
 
-    const [results, setResults] = useState([])
+    const [results, setResults] = useState([]);
+
+    const countResults = () => {
+        const jobs = services.map(el => el.job);
+        let newResult = [...results];
+        for (let job of jobs) {
+            if (orders.filter(elm => elm.service.job === job).length !== 0) {
+                console.log(orders.filter(elm => elm.service.job === job))
+                const employee = services.filter(el => el.job === job)[0].employee;
+                const income = orders.filter(elm => elm.service.job === job)
+                    .reduce((acc, curr) => acc + curr.service.price, 0);
+                const paidSum = orders.filter(elm => elm.service.job === job)
+                    .reduce((acc, curr) => acc + curr.paid.payment, 0);
+                const clientsDebt = orders.filter(elm => elm.service.job === job)
+                    .reduce((acc, curr) => acc + curr.paid.debt, 0);
+                const primeCost = orders.filter(elm => elm.service.job === job)
+                    .reduce((acc, curr) => acc + curr.paid.primeCost, 0);
+                newResult = [...newResult,
+                    {id: uuidv4(), job, employee, income, primeCost, paidSum, clientsDebt}]
+            }
+        }
+        const finalIncome = newResult.reduce((acc, curr) => acc + curr.income, 0)
+        const finalPaidSum = newResult.reduce((acc, curr) => acc + curr.paidSum, 0)
+        const finalClientDebt = newResult.reduce((acc, curr) => acc + curr.clientsDebt, 0)
+        const finalPrimeCost = newResult.reduce((acc, curr) => acc + curr.primeCost, 0)
+
+        newResult = [...newResult, {
+            id: uuidv4(),
+            job: 'All services',
+            employee: null,
+            primeCost: finalPrimeCost,
+            income: finalIncome,
+            paidSum: finalPaidSum,
+            clientsDebt: finalClientDebt
+        }]
+        setResults(newResult)
+    }
 
     const [activeTab, setActiveTab] = useState('orders');
 
@@ -143,7 +187,8 @@ function App() {
     }
 
     const createNewJob = (job, price, primeCost, employee) => {
-        const newServices = [...services, {id: uuidv4(), job, price, primeCost, employee}]
+        const newServices = [...services,
+            {id: uuidv4(), job, price, primeCost, employee}]
         setServices(newServices)
     }
 
@@ -170,8 +215,6 @@ function App() {
         })
         setOrders(newOrder)
     }
-
-    console.log(orders)
 
     const deleteClient = (clientId) => {
         const newClients = clients.filter(el => el.id !== clientId)
@@ -259,6 +302,7 @@ function App() {
                 deleteJob={deleteJob}
             />}
             {activeTab === 'results' && <CompanyResult
+                countResults={countResults}
                 results={results}
                 setResults={setResults}
                 orders={orders}

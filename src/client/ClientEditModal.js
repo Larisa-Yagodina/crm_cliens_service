@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import React, {useState} from 'react';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 
 
-export default function ClientUpdateModal(props){
+export default function ClientUpdateModal(props) {
 
     const {modal, setModal, client} = props;
     const toggle = () => setModal(!modal);
@@ -18,7 +18,7 @@ export default function ClientUpdateModal(props){
 
     return (
         <div>
-            <Modal isOpen={modal} toggle={toggle} >
+            <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Update client</ModalHeader>
                 <ModalBody>
 
@@ -27,8 +27,8 @@ export default function ClientUpdateModal(props){
                         <input
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                               type="text" className="form-control" placeholder="name"
-                               aria-describedby="basic-addon1"/>
+                            type="text" className="form-control" placeholder="name"
+                            aria-describedby="basic-addon1"/>
                     </div>
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="basic-addon1"> Address: </span>

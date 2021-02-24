@@ -1,6 +1,5 @@
 export const getDate = () => {
     const newDate = new Date();
-    console.log(newDate.getMonth() + 1)
     const day = newDate.getDate();
     const month = newDate.getMonth() + 1;
     const year = newDate.getFullYear()

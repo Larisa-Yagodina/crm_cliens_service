@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 
 
-export default function ServiceDeleteModal(props){
+export default function ServiceDeleteModal(props) {
 
     const {modal, setModal, job} = props;
     const toggle = () => setModal(!modal);
@@ -15,7 +15,7 @@ export default function ServiceDeleteModal(props){
 
     return (
         <div>
-            <Modal isOpen={modal} toggle={toggle} >
+            <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Are you sure you want to delete?</ModalHeader>
                 <ModalBody>
                     {job.job}
