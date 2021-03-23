@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import {v4 as uuidv4} from 'uuid';
 import OrdersList from "./order/OrdersList";
@@ -6,8 +6,15 @@ import CompanyResult from "./results/CompanyResult";
 import ClientsList from "./client/ClientsList";
 import ServicesList from "./services/ServicesList";
 import {Nav, NavItem, NavLink} from 'reactstrap';
-import classnames from 'classnames';
 import {getDate} from "./additional/GetDate";
+import loader from "./SVG_Loading/loading-spin.svg";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
+import Home from "./home/Home";
 
 
 const initialOrders = [{
@@ -95,10 +102,19 @@ const initialJob = [
 
 function App() {
 
-    const [serialOrderNumber, setSerialOrderNumber] = useState(3)
-    const [orders, setOrders] = useState(initialOrders)
-    const [clients, setClients] = useState(initialClients)
-    const [services, setServices] = useState(initialJob)
+    const [serialOrderNumber, setSerialOrderNumber] = useState(3);
+    const [orders, setOrders] = useState(initialOrders);
+    const [clients, setClients] = useState(initialClients);
+    const [services, setServices] = useState(initialJob);
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        setIsLoading(true)
+        setTimeout(() => {
+            console.log('it`s for future. When I develop server, I`ll get data from BD and use isLoading')
+        }, 1000)
+        setIsLoading(false)
+    }, [])
 
     const createNewClient = (name, address, phoneNumber, create) => {
         const createAt = create === '' ? getDate() : create;
@@ -149,7 +165,6 @@ function App() {
         let newResult = [...results];
         for (let job of jobs) {
             if (orders.filter(elm => elm.service.job === job).length !== 0) {
-                console.log(orders.filter(elm => elm.service.job === job))
                 const employee = services.filter(el => el.job === job)[0].employee;
                 const income = orders.filter(elm => elm.service.job === job)
                     .reduce((acc, curr) => acc + curr.service.price, 0);
@@ -158,7 +173,7 @@ function App() {
                 const clientsDebt = orders.filter(elm => elm.service.job === job)
                     .reduce((acc, curr) => acc + curr.paid.debt, 0);
                 const primeCost = orders.filter(elm => elm.service.job === job)
-                    .reduce((acc, curr) => acc + curr.paid.primeCost, 0);
+                    .reduce((acc, curr) => acc + curr.service.primeCost, 0);
                 newResult = [...newResult,
                     {id: uuidv4(), job, employee, income, primeCost, paidSum, clientsDebt}]
             }
@@ -178,12 +193,6 @@ function App() {
             clientsDebt: finalClientDebt
         }]
         setResults(newResult)
-    }
-
-    const [activeTab, setActiveTab] = useState('orders');
-
-    const toggle = tab => {
-        if (activeTab !== tab) setActiveTab(tab);
     }
 
     const createNewJob = (job, price, primeCost, employee) => {
@@ -232,83 +241,86 @@ function App() {
     }
 
     return (
-        <div className='container'>
-            <h1> Clients & Orders </h1>
-            <hr/>
-            <div>
-                <Nav tabs>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({active: activeTab === 'orders'})}
-                            onClick={() => {
-                                toggle('orders');
-                            }}
-                        >
-                            Orders
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({active: activeTab === 'clients'})}
-                            onClick={() => {
-                                toggle('clients');
-                            }}
-                        >
-                            Clients
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({active: activeTab === 'services'})}
-                            onClick={() => {
-                                toggle('services');
-                            }}
-                        >
-                            Services
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({active: activeTab === 'results'})}
-                            onClick={() => {
-                                toggle('results');
-                            }}
-                        >
-                            Company Results
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-            </div>
+        <Router>
+            <div className='container'>
+                <h1> Clients & Orders </h1>
+                <hr/>
+                {isLoading ? <img src={loader} width={200}/> : null}
 
-            {activeTab === 'orders' && <OrdersList
-                orders={orders}
-                job={services}
-                createNewOrder={createNewOrder}
-                clients={clients}
-                deleteOrder={deleteOrder}
-                updateOrder={updateOrder}
-            />}
-            {activeTab === 'clients' && <ClientsList
-                updateClient={updateClient}
-                clients={clients}
-                createNewClient={createNewClient}
-                deleteClient={deleteClient}
-            />}
-            {activeTab === 'services' && <ServicesList
-                job={services}
-                createNewJob={createNewJob}
-                clients={clients}
-                updateJob={updateJob}
-                deleteJob={deleteJob}
-            />}
-            {activeTab === 'results' && <CompanyResult
-                countResults={countResults}
-                results={results}
-                setResults={setResults}
-                orders={orders}
-                services={services}
-            />}
-        </div>
+                <div>
+                    <Nav tabs>
+                        <NavItem>
+                            <NavLink>
+                                <Link to="/">Home</Link>
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink>
+                                <Link to="/orders">Orders</Link>
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink>
+                                <Link to="/clients">Clients</Link>
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink>
+                                <Link to="/services">Services</Link>
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink>
+                                <Link to="/results">Results</Link>
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+                </div>
+
+                <Switch>
+                    <Route path="/orders">
+                       <OrdersList
+                            orders={orders}
+                            job={services}
+                            createNewOrder={createNewOrder}
+                            clients={clients}
+                            deleteOrder={deleteOrder}
+                            updateOrder={updateOrder}
+                        />
+                    </Route>
+                    <Route path="/clients">
+                         <ClientsList
+                            updateClient={updateClient}
+                            clients={clients}
+                            createNewClient={createNewClient}
+                            deleteClient={deleteClient}
+                        />
+                    </Route>
+                    <Route path="/services">
+                        <ServicesList
+                            job={services}
+                            createNewJob={createNewJob}
+                            clients={clients}
+                            updateJob={updateJob}
+                            deleteJob={deleteJob}
+                        />
+                    </Route>
+                    <Route path="/results">
+                        <CompanyResult
+                            countResults={countResults}
+                            results={results}
+                            setResults={setResults}
+                            orders={orders}
+                            services={services}
+                        />
+                    </Route>
+                    <Route path="/">
+                        <Home />
+                    </Route>
+                </Switch>
+
+            </div>
+        </Router>
     );
 }
 

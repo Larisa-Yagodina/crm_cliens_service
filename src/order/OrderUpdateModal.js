@@ -13,9 +13,9 @@ export default function OrderUpdateModal(props) {
     const [sayToClient, setSayToClient] = useState(order.sayToClient.status)
     const [clientReceived, setClientReceived] = useState(order.clientReceived.status)
 
-    const updateButtonHandler = (clientId, payment, inProgress, jobCompleted, sayToClient, clientReceived) => {
-        const currentPaid = order.paid.payment + payment;
-        const currentDebt = order.paid.debt - payment;
+    const updateButtonHandler = () => {
+        const currentPaid = order.paid.payment + newPayment;
+        const currentDebt = order.paid.debt - newPayment;
         const statusIfPaid = order.service.price <= currentPaid;
         const dateIfPaid = statusIfPaid ? getDate() : '';
         const newOrder = {
@@ -42,7 +42,7 @@ export default function OrderUpdateModal(props) {
                 status: clientReceived
             },
         };
-        props.updateOrder(clientId, newOrder)
+        props.updateOrder(order.id, newOrder)
         toggle()
         setNewPayment(0)
     }
@@ -61,7 +61,7 @@ export default function OrderUpdateModal(props) {
                         <input
                             value={newPayment}
                             onChange={(e) => setNewPayment(Number(e.target.value))}
-                            type="text" className="form-control" placeholder="new payment"
+                            type="number" className="form-control" placeholder="new payment"
                             aria-describedby="basic-addon1"/>
                     </div>
                     <ListGroupItem>
@@ -83,7 +83,7 @@ export default function OrderUpdateModal(props) {
                                 type="checkbox"
                                 checked={jobCompleted}
                             />{' '}
-                            Job compleeted
+                            Job completed
                         </Label>
                     </ListGroupItem>
                     <ListGroupItem>
@@ -115,7 +115,7 @@ export default function OrderUpdateModal(props) {
                 </ModalBody>
                 <ModalFooter>
                     <Button
-                        onClick={() => updateButtonHandler(order.id, newPayment, inProgress, jobCompleted, sayToClient, clientReceived)}
+                        onClick={updateButtonHandler}
                         color="primary"> Update </Button>{' '}
                     <Button color="secondary" onClick={toggle}> Cancel </Button>
                 </ModalFooter>

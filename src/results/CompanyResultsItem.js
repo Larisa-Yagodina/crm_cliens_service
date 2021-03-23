@@ -1,11 +1,8 @@
 import React from 'react';
 
-
 export default function CompanyResultItem(props) {
 
     const {result} = props;
-
-    console.log(result)
 
     return (
         <tr>
