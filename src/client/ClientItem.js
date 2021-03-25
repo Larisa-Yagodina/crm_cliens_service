@@ -2,15 +2,19 @@ import React, {useState} from 'react';
 import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import ClientUpdateModal from "./ClientEditModal";
 import ClientDeleteModal from "./ClientDeleteModal";
-
+import { useHistory } from "react-router-dom";
 
 export default function ClientItem(props) {
 
+    let history = useHistory();
 
     const [dropdownOpen, setOpen] = useState(false);
     const toggle = () => setOpen(!dropdownOpen);
     const [modalUpdate, setModalUpdate] = useState(false);
-    const openModalUpdate = () => setModalUpdate(!modalUpdate)
+    const openModalUpdate = () => {
+        setModalUpdate(!modalUpdate)
+        history.push("/update_client");
+    }
     const [modalDelete, setModalDelete] = useState(false);
     const openModalDelete = () => setModalDelete(!modalDelete)
 

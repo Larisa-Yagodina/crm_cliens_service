@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter as Router, BrowserRouter} from "react-router-dom";
 
 ReactDOM.render(
   <React.Fragment>
@@ -10,7 +11,8 @@ ReactDOM.render(
           <Router>
               <App/>
           </Router>
-      </BrowserRouter>  </React.Fragment>,
+      </BrowserRouter>  
+  </React.Fragment>,
   document.getElementById('root')
 );
 
