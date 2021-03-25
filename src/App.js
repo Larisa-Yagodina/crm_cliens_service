@@ -15,6 +15,7 @@ import {
     Link
 } from "react-router-dom";
 import Home from "./home/Home";
+import Links from "./routers/Links"
 
 
 const initialOrders = [{
@@ -248,76 +249,10 @@ function App() {
                 {isLoading ? <img src={loader} width={200}/> : null}
 
                 <div>
-                    <Nav tabs>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/">Home</Link>
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/orders">Orders</Link>
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/clients">Clients</Link>
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/services">Services</Link>
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/results">Results</Link>
-                            </NavLink>
-                        </NavItem>
-                    </Nav>
+                    <Links />
                 </div>
 
-                <Switch>
-                    <Route path="/orders">
-                       <OrdersList
-                            orders={orders}
-                            job={services}
-                            createNewOrder={createNewOrder}
-                            clients={clients}
-                            deleteOrder={deleteOrder}
-                            updateOrder={updateOrder}
-                        />
-                    </Route>
-                    <Route path="/clients">
-                         <ClientsList
-                            updateClient={updateClient}
-                            clients={clients}
-                            createNewClient={createNewClient}
-                            deleteClient={deleteClient}
-                        />
-                    </Route>
-                    <Route path="/services">
-                        <ServicesList
-                            job={services}
-                            createNewJob={createNewJob}
-                            clients={clients}
-                            updateJob={updateJob}
-                            deleteJob={deleteJob}
-                        />
-                    </Route>
-                    <Route path="/results">
-                        <CompanyResult
-                            countResults={countResults}
-                            results={results}
-                            setResults={setResults}
-                            orders={orders}
-                            services={services}
-                        />
-                    </Route>
-                    <Route path="/">
-                        <Home />
-                    </Route>
-                </Switch>
+                
 
             </div>
         </Router>

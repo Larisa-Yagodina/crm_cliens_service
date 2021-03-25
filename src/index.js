@@ -6,8 +6,11 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.Fragment>
-    <App />
-  </React.Fragment>,
+      <BrowserRouter>
+          <Router>
+              <App/>
+          </Router>
+      </BrowserRouter>  </React.Fragment>,
   document.getElementById('root')
 );
 
