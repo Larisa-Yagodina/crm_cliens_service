@@ -1,10 +1,16 @@
 import React from 'react';
-import {Table} from "reactstrap";
+import {Button, Table} from "reactstrap";
 import OrderItem from "./OrderItem";
 import CreateNewOrder from "./CreateNewOrder";
-
+import {useHistory} from "react-router-dom";
 
 export default function OrdersList(props) {
+
+    let history = useHistory();
+
+    const goToCreateOrder = () => {
+        history.push("/orders/create_order");
+    }
 
     return (
         <div>
@@ -14,8 +20,7 @@ export default function OrdersList(props) {
                         <h2> Orders </h2>
                     </div>
                     <div className="col createButton">
-                        <CreateNewOrder createNewOrder={props.createNewOrder} clients={props.clients}
-                                        services={props.job}/>
+                        <Button outline color="primary" onClick={goToCreateOrder}> CreateNewOrder </Button>
                     </div>
                 </div>
             </div>

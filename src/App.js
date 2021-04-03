@@ -1,20 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import {v4 as uuidv4} from 'uuid';
-import OrdersList from "./order/OrdersList";
-import CompanyResult from "./results/CompanyResult";
-import ClientsList from "./client/ClientsList";
-import ServicesList from "./services/ServicesList";
-import {Nav, NavItem, NavLink} from 'reactstrap';
 import {getDate} from "./additional/GetDate";
 import loader from "./SVG_Loading/loading-spin.svg";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
-import Home from "./home/Home";
+import LinksRouters from "./routers/LinksRouters"
+import SwitchRoutes from "./routers/SwitchRoutes"
 
 
 const initialOrders = [{
@@ -161,11 +151,11 @@ function App() {
     const [results, setResults] = useState([]);
 
     const countResults = () => {
-        const jobs = services.map(el => el.job);
+        const jobs = orders.map(el => el.service.job).filter(el => orders.indexOf(el) === orders.lastIndexOf(el))
         let newResult = [...results];
         for (let job of jobs) {
             if (orders.filter(elm => elm.service.job === job).length !== 0) {
-                const employee = services.filter(el => el.job === job)[0].employee;
+                const employee = orders.filter(el => el.service.job === job)[0].service.employee;
                 const income = orders.filter(elm => elm.service.job === job)
                     .reduce((acc, curr) => acc + curr.service.price, 0);
                 const paidSum = orders.filter(elm => elm.service.job === job)
@@ -246,76 +236,25 @@ function App() {
                 <hr/>
                 {isLoading ? <img src={loader} width={200}/> : null}
 
-                <div>
-                    <Nav tabs>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/">Home</Link>
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/orders">Orders</Link>
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/clients">Clients</Link>
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/services">Services</Link>
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>
-                                <Link to="/results">Results</Link>
-                            </NavLink>
-                        </NavItem>
-                    </Nav>
-                </div>
-                <Switch>
-                    <Route path="/orders">
-                        <OrdersList
-                            orders={orders}
-                            job={services}
-                            createNewOrder={createNewOrder}
-                            clients={clients}
-                            deleteOrder={deleteOrder}
-                            updateOrder={updateOrder}
-                        />
-                    </Route>
-                    <Route path="/clients">
-                        <ClientsList
-                            updateClient={updateClient}
-                            clients={clients}
-                            createNewClient={createNewClient}
-                            deleteClient={deleteClient}
-                        />
-                    </Route>
-                    <Route path="/services">
-                        <ServicesList
-                            job={services}
-                            createNewJob={createNewJob}
-                            clients={clients}
-                            updateJob={updateJob}
-                            deleteJob={deleteJob}
-                        />
-                    </Route>
-                    <Route path="/results">
-                        <CompanyResult
-                            countResults={countResults}
-                            results={results}
-                            setResults={setResults}
-                            orders={orders}
-                            services={services}
-                        />
-                    </Route>
-                    <Route path="/">
-                        <Home />
-                    </Route>
-                </Switch>
+                <LinksRouters />
+                <SwitchRoutes
+                    orders={orders}
+                    job={services}
+                    createNewOrder={createNewOrder}
+                    clients={clients}
+                    deleteOrder={deleteOrder}
+                    updateOrder={updateOrder}
+                    updateClient={updateClient}
+                    createNewClient={createNewClient}
+                    deleteClient={deleteClient}
+                    createNewJob={createNewJob}
+                    updateJob={updateJob}
+                    deleteJob={deleteJob}
+                    countResults={countResults}
+                    results={results}
+                    setResults={setResults}
+                    services={services}
+                />
             </div>
     );
 }

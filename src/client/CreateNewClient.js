@@ -1,33 +1,37 @@
 import React, {useState} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {useHistory} from "react-router-dom";
 
 
 export default function CreateNewClient(props) {
 
-    const [modal, setModal] = useState(false);
-    const toggle = () => setModal(!modal);
     const [newName, setNewName] = useState('');
     const [newPhoneNumber, setNewPhoneNumber] = useState('');
     const [newAddress, setNewAddress] = useState('');
     const [createAt, setCreateAt] = useState('')
 
+    let history = useHistory();
+
     const saveButtonHandler = () => {
         props.createNewClient(newName, newAddress, newPhoneNumber, createAt);
-        toggle();
         setNewName('')
         setNewPhoneNumber('')
         setNewAddress('')
         setCreateAt('')
+        history.goBack();
+    }
+
+    const goToClientList = () => {
+        history.push("/clients");
     }
 
 
     return (
         <div>
-            <Button outline color="primary" onClick={toggle}> Create new client </Button>
 
-            <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Modal title</ModalHeader>
-                <ModalBody className='d-grid g-1'>
+            <div toggle={goToClientList}>
+                <h2 toggle={goToClientList}>Create new client</h2>
+                <div className='d-grid g-1'>
                     <div className="input-group flex-nowrap">
                         <span className="input-group-text" id="addon-wrapping">Name: </span>
                         <input
@@ -64,15 +68,15 @@ export default function CreateNewClient(props) {
                         />
                     </div>
 
-                </ModalBody>
-                <ModalFooter>
+                </div>
+                <div>
                     <Button
                         color="primary"
                         onClick={saveButtonHandler}
                     > Save </Button>{' '}
-                    <Button color="secondary" onClick={toggle}> Cancel </Button>
-                </ModalFooter>
-            </Modal>
+                    <Button color="secondary" onClick={goToClientList}> Cancel </Button>
+                </div>
+            </div>
 
         </div>
     )

@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Button} from 'reactstrap';
+import {useHistory} from "react-router-dom";
 
 
 export default function CreateNewJob(props) {
 
-    const [modal, setModal] = useState(false);
-    const toggle = () => setModal(!modal);
 
     const [newJob, setNewJob] = useState('')
     const [newPrice, setNewPrice] = useState('')
@@ -18,16 +17,22 @@ export default function CreateNewJob(props) {
         setNewPrice('')
         setNewPrimeCost('')
         setNewEmployee('')
-        toggle()
+        history.goBack()
+    }
+
+
+    let history = useHistory();
+
+    const goToServicesList = () => {
+        history.push("/services");
     }
 
     return (
         <div>
-            <Button outline color="primary" onClick={toggle}> Create new job </Button>
 
-            <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Modal title</ModalHeader>
-                <ModalBody>
+            <div>
+                <h2>Create new job</h2>
+                <div>
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="basic-addon1"> Job: </span>
                         <input value={newJob}
@@ -60,15 +65,15 @@ export default function CreateNewJob(props) {
                             aria-describedby="basic-addon1"/>
                     </div>
 
-                </ModalBody>
-                <ModalFooter>
+                </div>
+                <div>
                     <Button
                         disabled={!newJob || !newPrice || !newPrimeCost || !newEmployee}
                         color="primary"
                         onClick={() => saveButtonHandler(newJob, newPrice, newPrimeCost, newEmployee)}> Save </Button>{' '}
-                    <Button color="secondary" onClick={toggle}> Cancel </Button>
-                </ModalFooter>
-            </Modal>
+                    <Button color="secondary" onClick={goToServicesList}> Cancel </Button>
+                </div>
+            </div>
         </div>
     )
 }

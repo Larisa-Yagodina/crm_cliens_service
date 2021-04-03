@@ -1,10 +1,15 @@
 import React from 'react';
-import {Table} from "reactstrap";
+import {Button, Table} from "reactstrap";
 import ServicesItem from "./ServicesItem";
-import CreateNewJob from "./CreacteNewJob";
-
+import {useHistory} from "react-router-dom";
 
 export default function ServicesList(props) {
+
+    let history = useHistory();
+
+    function goToCreateJob() {
+        history.push("/services/create_job");
+    }
 
     return (
         <div>
@@ -14,7 +19,7 @@ export default function ServicesList(props) {
                         <h2> Job </h2>
                     </div>
                     <div className="col createButton">
-                        <CreateNewJob createNewJob={props.createNewJob}/>
+                        <Button outline color="primary" onClick={goToCreateJob}> Create New Job </Button>
                     </div>
                 </div>
             </div>

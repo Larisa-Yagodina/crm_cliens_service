@@ -10,11 +10,13 @@ export default function ClientItem(props) {
 
     const [dropdownOpen, setOpen] = useState(false);
     const toggle = () => setOpen(!dropdownOpen);
+
     const [modalUpdate, setModalUpdate] = useState(false);
+
     const openModalUpdate = () => {
         setModalUpdate(!modalUpdate)
-        history.push("/update_client");
     }
+
     const [modalDelete, setModalDelete] = useState(false);
     const openModalDelete = () => setModalDelete(!modalDelete)
 

@@ -1,11 +1,18 @@
 import React from 'react';
-import {Table} from "reactstrap";
+import {Button, Table} from "reactstrap";
 import ClientItem from "./ClientItem";
 import CreateNewClient from "./CreateNewClient";
 import '../App.css';
+import {useHistory} from "react-router-dom";
 
 
 export default function ClientsList(props) {
+
+    let history = useHistory();
+
+    const goToCreateClient = () => {
+        history.push("/clients/create_client")
+    }
 
     return (
         <div>
@@ -16,7 +23,7 @@ export default function ClientsList(props) {
                         <h2> Clients </h2>
                     </div>
                     <div className="col createButton">
-                        <CreateNewClient createNewClient={props.createNewClient}/>
+                        <Button outline color="primary" onClick={goToCreateClient}> Create new client </Button>
                     </div>
                 </div>
             </div>
