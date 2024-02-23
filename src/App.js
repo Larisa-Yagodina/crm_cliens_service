@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import {v4 as uuidv4} from 'uuid';
+import React, {useState, useEffect} from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import {v4 as uuidv4} from "uuid";
 import OrdersList from "./order/OrdersList";
 import CompanyResult from "./results/CompanyResult";
 import ClientsList from "./client/ClientsList";
 import ServicesList from "./services/ServicesList";
-import {Nav, NavItem, NavLink} from 'reactstrap';
+import {Nav, NavItem, NavLink} from "reactstrap";
 import {getDate} from "./additional/GetDate";
 import loader from "./SVG_Loading/loading-spin.svg";
 import {
@@ -18,86 +18,86 @@ import Home from "./home/Home";
 
 
 const initialOrders = [{
-    orderNumber: 1,
+    "orderNumber": 1,
     id: uuidv4(),
-    clientName: 'Bill Brown',
-    service: {
-        job: 'Translation',
-        employee: 'Greg',
-        price: 100,
-        primeCost: 20,
-        createAt: '15.01.2021',
+    "clientName": "Bill Brown",
+    "service": {
+        "job": "Translation",
+        "employee": "Greg",
+        "price": 100,
+        "primeCost": 20,
+        "createAt": "15.01.2021",
     },
-    sentToDo: {
-        date: '10.01.2021',
-        status: true
+    "sentToDo": {
+        "date": "10.01.2021",
+        "status": true
     },
-    completed: {
-        date: "31.01.2021",
-        status: true
+    "completed": {
+        "date": "31.01.2021",
+        "status": true
     },
-    sayToClient: {
-        date: '',
-        status: false
+    "sayToClient": {
+        "date": "",
+        "status": false
     },
-    clientReceived: {
-        date: '',
-        status: false
+    "clientReceived": {
+        "date": "",
+        "status": false
     },
-    paid: {
-        payment: 50,
-        debt: 50,
-        primeCost: 20,
-        date: '',
-        status: false
+    "paid": {
+        "payment": 50,
+        "debt": 50,
+        "primeCost": 20,
+        "date": "",
+        "status": false
     },
 },
     {
         orderNumber: 2,
         id: uuidv4(),
-        clientName: 'Alice Smith',
+        clientName: "Alice Smith",
         service: {
-            job: 'Consultation',
-            employee: 'Bob',
+            job: "Consultation",
+            employee: "Bob",
             price: 200,
             primeCost: 50,
-            createAt: '20.01.2021',
+            createAt: "20.01.2021",
         },
         sentToDo: {
-            date: '21.01.2021',
+            date: "21.01.2021",
             status: true
         },
         completed: {
-            date: '',
+            date: "",
             status: false
         },
         sayToClient: {
-            date: '',
+            date: "",
             status: false
         },
         clientReceived: {
-            date: '',
+            date: "",
             status: false
         },
         paid: {
             payment: 170,
             debt: 30,
             primeCost: 50,
-            date: '',
+            date: "",
             status: false
         },
     },
 ]
 
 const initialClients = [
-    {id: uuidv4(), name: 'Bill Brown', address: 'New York', phoneNumber: '198374928374', createAt: '15.01.2021'},
-    {id: uuidv4(), name: 'Bob Smith', address: 'Chicago', phoneNumber: '1987654321', createAt: '20.01.2021'},
+    {id: uuidv4(), name: "Bill Brown", address: "New York", phoneNumber: "198374928374", createAt: "15.01.2021"},
+    {id: uuidv4(), name: "Bob Smith", address: "Chicago", phoneNumber: "1987654321", createAt: "20.01.2021"},
 ]
 
 const initialJob = [
-    {id: uuidv4(), job: 'Translation', price: 100, primeCost: 20, employee: 'Greg'},
-    {id: uuidv4(), job: 'Consultation', price: 200, primeCost: 50, employee: 'Bob'},
-    {id: uuidv4(), job: 'Printout of documents', price: 50, primeCost: 5, employee: 'Rachel'}
+    {id: uuidv4(), job: "Translation", price: 100, primeCost: 20, employee: "Greg"},
+    {id: uuidv4(), job: "Consultation", price: 200, primeCost: 50, employee: "Bob"},
+    {id: uuidv4(), job: "Printout of documents", price: 50, primeCost: 5, employee: "Rachel"}
 ]
 
 function App() {
@@ -111,13 +111,13 @@ function App() {
     useEffect(() => {
         setIsLoading(true)
         setTimeout(() => {
-            console.log('it`s for future. When I develop server, I`ll get data from BD and use isLoading')
+            console.log("it`s for future. When I develop server, I`ll get data from BD and use isLoading")
         }, 1000)
         setIsLoading(false)
     }, [])
 
     const createNewClient = (name, address, phoneNumber, create) => {
-        const createAt = create === '' ? getDate() : create;
+        const createAt = create === "" ? getDate() : create;
         const newClients = [...clients, {id: uuidv4(), name, address, phoneNumber, createAt}];
         setClients(newClients)
     }
@@ -137,19 +137,19 @@ function App() {
             clientName,
             service: {...service[0], createAt: getDate()},
             sentToDo: {
-                date: '',
+                date: "",
                 status: false
             },
             completed: {
-                date: '',
+                date: "",
                 status: false
             },
             sayToClient: {
-                date: '',
+                date: "",
                 status: false
             },
             clientReceived: {
-                date: '',
+                date: "",
                 status: false
             },
             paid,
@@ -185,7 +185,7 @@ function App() {
 
         newResult = [...newResult, {
             id: uuidv4(),
-            job: 'All services',
+            job: "All services",
             employee: null,
             primeCost: finalPrimeCost,
             income: finalIncome,
@@ -241,7 +241,7 @@ function App() {
     }
 
     return (
-            <div className='container'>
+            <div className="container">
                 <h1> Clients & Orders </h1>
                 <hr/>
                 {isLoading ? <img src={loader} width={200}/> : null}

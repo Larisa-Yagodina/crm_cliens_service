@@ -13,7 +13,7 @@ export default function ClientItem(props) {
     const [modalUpdate, setModalUpdate] = useState(false);
     const openModalUpdate = () => {
         setModalUpdate(!modalUpdate)
-        history.push("/update_client");
+
     }
     const [modalDelete, setModalDelete] = useState(false);
     const openModalDelete = () => setModalDelete(!modalDelete)
